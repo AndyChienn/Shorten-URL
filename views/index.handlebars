@@ -1,0 +1,36 @@
+{{#if shortURL}}
+<div class="result">
+  <h5>Success! Your link is below!</h5>
+  <a href="http://localhost:3000/{{shortURL}}">
+    <p id="shortened">http://localhost:3000/{{shortURL}}</p>
+  </a>
+</div>
+<div class="btn-area">
+  <button class="copy" onclick="copy()">Copy</button>
+  <a href="/">
+    <button class="'btn btn-second">BACK</button>
+  </a>
+
+</div>
+
+<script>
+  function copy() {
+    const URL = document.querySelector('#shortened')
+    navigator.clipboard.writeText(URL.innerText)
+      .then(() => alert('copied'))
+      .catch(error => console.log(error))
+  }
+</script>
+
+{{else}}
+
+
+
+<form action="/" method="POST">
+  <div class="container">
+    <input type="url" name="url" placeholder="請輸入您的網址" required />
+    <button class="shorten" type="submit">Shorten</button>
+  </div>
+</form>
+
+{{/if}}
