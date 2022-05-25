@@ -48,7 +48,7 @@ router.get('/:shortURL', (req, res) => {
     .then(data => {
       if (!data) {
         return res.render("error", {
-          errorMsg: "Can't find this URL！",
+          errorMessage: "Can't find this URL！",
           errorURL: 'http://localhost:3000/' + shortURL,
         })
       }
