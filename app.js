@@ -29,25 +29,42 @@ db.once('open', () => {
 })
 
 app.get('/', (req, res) => {
-  // const newURL = shortenUrl()
-  // console.log('new URL=', newURL)
   res.render('index')
 })
 
 app.post('/', (req, res) => {
   const longURL = req.body.url
   const shortURL = shortenUrl()
+  if (!longURL) return res.redirect("/")
 
   URL.findOne({ longURL })
+    .lean()
     .then(data => {
       if (!data) {
         URL.create({ longURL, shortURL })
+        res.render('index', { shortURL })
+      } else if (data) {
+        res.render('index', { shortURL: data.shortURL })
       }
     })
-    .then(res.render('index', { shortURL }))
     .catch(error => console.error(error))
-
 })
+
+// app.post("/", (req, res) => {
+// if (!req.body.url) return res.redirect("/")
+//   const shortURL = shortenUrl()
+
+//   URL.findOne({ longURL: req.body.url })
+//     .then(data =>
+//       data ? data : URL.create({ shortURL, longURL: req.body.url })
+//     )
+//     .then(data =>
+//       res.render("index", {
+//         shortURL: data.shortURL,
+//       })
+//     )
+//     .catch(error => console.error(error))
+// })
 
 app.get('/:shortURL', (req, res) => {
   const { shortURL } = req.params
@@ -66,4 +83,5 @@ app.get('/:shortURL', (req, res) => {
 
 app.listen(port, (req, res) => {
   console.log(`express is on http://localhost:${port}`)
-})
+}
+)
